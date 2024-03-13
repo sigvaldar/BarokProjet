@@ -513,7 +513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -449, y: 417}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1138969683
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' lorem ipsum zfzefzfzfzf'
+  m_text: "jean - fran\xE7ois "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f810389df35a4494286e68b576de3d40, type: 2}
   m_sharedMaterial: {fileID: -3220323051758104780, guid: f810389df35a4494286e68b576de3d40, type: 2}
