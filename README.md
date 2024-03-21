@@ -14,4 +14,4 @@ proprio : max
 
 Dev : jf et yorick
 
-Mail De contact : jfx967@gmail.com/weptak@gmail.com
+Mail De contact : jfx967@gmail.com/weptak@gmail.com/steampunk.barok@gmail.com
