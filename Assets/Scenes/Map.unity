@@ -827,6 +827,7 @@ GameObject:
   - component: {fileID: 1282396043}
   - component: {fileID: 1282396042}
   - component: {fileID: 1282396041}
+  - component: {fileID: 1282396044}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -908,6 +909,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 52.551, y: 0, z: 0}
+--- !u!114 &1282396044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282396040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed948a7e380f7634298b84961f733f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 100
+  zoomSpeed: 10
+  minZoom: 10
+  maxZoom: 100
 --- !u!1 &1302892595
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,11 +1003,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1302892595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff1ac2096bd52c740909d6c94499d6b9, type: 3}
+  m_Script: {fileID: 11500000, guid: a89d08c6ec73a17419c0dd9c9f8d91e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Tilemap: {fileID: 1213986943}
   GridHeight: 5
   GridWidth: 5
+  CellPrefab: {fileID: 4390499584229454300, guid: f7d10d2c99fc03749aa528bec0f100ee, type: 3}
+  CellSize: 1
 --- !u!1 &1531999940
 GameObject:
   m_ObjectHideFlags: 0
