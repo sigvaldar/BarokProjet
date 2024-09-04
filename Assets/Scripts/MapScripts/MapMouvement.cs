@@ -7,24 +7,28 @@ public class MapMouvement : MonoBehaviour
 
     public GridLayout gridLayout;
     [SerializeField]private Grid grid;
-    [SerializeField] private GameObject pion;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]private GameObject pion;
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            pion.transform.position = SnapCoordinateToGrid(GetMouseWorldPosition());
+        }
     }       
     public static Vector3 GetMouseWorldPosition()
     {
+        Vector3 mousePoss;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit rayCastHit))
         {
-            return rayCastHit.point;
+            mousePoss = rayCastHit.point;
+            if (rayCastHit.transform.gameObject.GetComponent<Cell>())
+            {
+                Debug.Log("case toucher");
+            }
+            return mousePoss;
         }
         else
         {
@@ -37,10 +41,4 @@ public class MapMouvement : MonoBehaviour
         position = grid.GetCellCenterWorld(cellPos);
         return position;
     }    
-    public void InitializeWidthObject(GameObject prefab)
-    {
-        Vector3 position = SnapCoordinateToGrid(Vector3.zero);
- 
-        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
-    }
 }

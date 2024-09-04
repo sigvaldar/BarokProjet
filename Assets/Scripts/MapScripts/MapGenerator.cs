@@ -10,6 +10,9 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] float GridHeight, GridWidth;
     [SerializeField] GameObject CellPrefab;
     [SerializeField] float CellSize = 1f;
+
+    public GridLayout gridLayout;
+    [SerializeField] private Grid grid;
     private void Awake()
     {
         GenerateMap();
@@ -21,7 +24,11 @@ public class MapGenerator : MonoBehaviour
             for (int x = 0; x < GridWidth; x++)
             {
                 Vector3 position = HextoWorld(x, y, CellSize);
-                Instantiate(CellPrefab,position,Quaternion.identity);
+                //position = SnapCoordinateToGrid(position);
+                //Debug.Log(position);
+                GameObject mCell = Instantiate(CellPrefab,position,Quaternion.identity);
+                mCell.transform.parent = Tilemap.transform;
+                
             }
         }
     }
@@ -31,9 +38,15 @@ public class MapGenerator : MonoBehaviour
         float width = cellSize * 2;
         float height = Mathf.Sqrt(3) * cellSize;
 
-        float worldX = width * (x * 0.5f * (y & 1));
+        float worldX = width * (x + 0.5f * (y & 1));
         float worldZ = height * y * 0.75f;
-        float worldY = (int)(UnityEngine.Random.Range(0f, 3f));
+        float worldY = (UnityEngine.Random.Range(0f, 1f));
         return new Vector3(worldX,worldY,worldZ);
+    }
+    public Vector3 SnapCoordinateToGrid(Vector3 position)
+    {
+        Vector3Int cellPos = gridLayout.WorldToCell(position);
+        position = grid.GetCellCenterWorld(cellPos);
+        return position;
     }
 }
