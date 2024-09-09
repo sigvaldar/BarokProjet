@@ -7,10 +7,11 @@ using UnityEngine.Tilemaps;
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] Tilemap Tilemap;
+    [SerializeField] Tile tile;
     [SerializeField] float GridHeight, GridWidth;
     [SerializeField] GameObject CellPrefab;
     [SerializeField] float CellSize = 1f;
-
+     
     public GridLayout gridLayout;
     [SerializeField] private Grid grid;
     private void Awake()
@@ -19,16 +20,23 @@ public class MapGenerator : MonoBehaviour
     }
     void GenerateMap() 
     {
+
+        //Tilemap.size = new Vector3Int (20, 20,0);
+
+        Debug.Log(Tilemap.size);
+        //Tilemap.FloodFill(Vector3Int.zero,new Tile() { gameObject = CellPrefab});
         for (int y = 0; y < GridHeight; y++)
         {
             for (int x = 0; x < GridWidth; x++)
             {
-                Vector3 position = HextoWorld(x, y, CellSize);
+                Vector3Int postion = new Vector3Int(x, y,(int) (UnityEngine.Random.Range(0f, 2f)));
+                //Vector3 position = HextoWorld(x, y, CellSize);
                 //position = SnapCoordinateToGrid(position);
                 //Debug.Log(position);
-                GameObject mCell = Instantiate(CellPrefab,position,Quaternion.identity);
-                mCell.transform.parent = Tilemap.transform;
-                
+                //GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
+                //mCell.transform.parent = Tilemap.transform;
+                Tilemap.SetTile(postion, new Tile() { gameObject = CellPrefab });
+
             }
         }
     }

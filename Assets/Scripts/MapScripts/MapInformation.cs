@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class MapInformation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject PanelInfo,PanelMap;
+    public void ShowInformation()
     {
-        
+        PanelInfo.SetActive(!PanelInfo.activeInHierarchy);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void ShowMap()
     {
-        
+        PanelMap.SetActive(!PanelMap.activeInHierarchy);
     }
 }
 public class Information
