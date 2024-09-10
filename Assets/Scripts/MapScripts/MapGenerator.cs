@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 //[ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] Tilemap Tilemap;
-    [SerializeField] Tile tile;
     [SerializeField] float GridHeight, GridWidth;
-    [SerializeField] GameObject CellPrefab;
+    [SerializeField] GameObject CellPrefab,hexaGrid;
     [SerializeField] float CellSize = 1f;
+    [SerializeField] float MapMaxHeight = 0.5f;
      
     public GridLayout gridLayout;
     [SerializeField] private Grid grid;
@@ -21,7 +22,7 @@ public class MapGenerator : MonoBehaviour
     void GenerateMap() 
     {
 
-        //Tilemap.size = new Vector3Int (20, 20,0);
+        //Tilemap.size = new Vector3Int (20, 20,20);
 
         Debug.Log(Tilemap.size);
         //Tilemap.FloodFill(Vector3Int.zero,new Tile() { gameObject = CellPrefab});
@@ -29,17 +30,35 @@ public class MapGenerator : MonoBehaviour
         {
             for (int x = 0; x < GridWidth; x++)
             {
-                Vector3Int postion = new Vector3Int(x, y,(int) (UnityEngine.Random.Range(0f, 2f)));
-                //Vector3 position = HextoWorld(x, y, CellSize);
-                //position = SnapCoordinateToGrid(position);
-                //Debug.Log(position);
-                //GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
-                //mCell.transform.parent = Tilemap.transform;
-                Tilemap.SetTile(postion, new Tile() { gameObject = CellPrefab });
+                //Vector3Int positionI= new Vector3Int(x, y,0);
 
+                Vector3 position = HextoWorld(x, y, CellSize);
+                //position = SnapCoordinateToGrid(position);
+                GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
+                mCell.transform.parent = hexaGrid.transform;
+                //mCell.transform.parent = Tilemap.transform;
+
+
+                //Tile tile = new Tile();
+                //tile.gameObject = CellPrefab;
+
+                //Tilemap.SetTile(positionI, tile);
+
+                //tile.gameObject.GetComponent<Cell>().ChangeHeight(MapMaxHeight);
             }
         }
+
+
     }
+
+    //private void ChangeTilePos()
+    //{
+    //    var b = new BoundsInt(0, 0, 0, 20, 20, 20);
+        
+    //    foreach (var tile in Tilemap.GetTilesBlock(b)){
+    //        ((Tile)tile).gameObject.tr
+    //    }
+    //}
 
     private Vector3 HextoWorld(int x, int y, float cellSize)
     {

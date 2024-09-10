@@ -11,6 +11,12 @@ public class Cell : MonoBehaviour
     public LandType landtype;
     public List<Ressources> Ressources;
     public List<Unitées> LocalUnit;
+
+    //public GameObject obCell;
     
+    //public void ChangeHeight(float heightMax = 1f)
+    //{
+    //    obCell.transform.position = new(transform.position.x,Random.Range(0f, heightMax), transform.position.z);
+    //}
 }
 
