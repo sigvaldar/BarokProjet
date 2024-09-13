@@ -32,12 +32,17 @@ public class CameraController : MonoBehaviour
         // Rotation
         if (Input.GetMouseButton(1)) // Clic droit pour tourner
         {
-            float horizontal = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-            float vertical = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-            transform.Rotate(vertical, horizontal, 0);
+            CameraRotation();
         }
 
         CameraZoom();
+    }
+
+    private void CameraRotation()
+    {
+        float horizontal = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+        float vertical = Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime * -1f;
+        transform.Rotate(vertical, horizontal, 0);
     }
 
     private void CameraZoom()

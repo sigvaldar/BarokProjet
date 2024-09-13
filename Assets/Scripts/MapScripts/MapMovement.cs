@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class MapMovement : MonoBehaviour
 {
-
-    public GridLayout gridLayout;
-    [SerializeField]private Grid grid;
-    [SerializeField]private GameObject pion;
-    [SerializeField]private Vector3 Selectedcell;
+    [SerializeField] private GameObject pion;
+    [SerializeField] private Vector3 Selectedcell;
     [SerializeField] private bool canMove;
-    //unit possition on the grid;
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Selectedcell = SnapCoordinateToGrid(GetMouseWorldPosition());
+            Selectedcell = GetMouseObjectPosition();
             UnitMovement();
         }
     }
@@ -24,18 +20,21 @@ public class MapMovement : MonoBehaviour
     {
         pion.transform.position = Selectedcell;
     }
-    public static Vector3 GetMouseWorldPosition()
+
+    /// <summary>
+    /// Return the position of the clicked element
+    /// </summary>
+    /// <returns></returns>
+    public static Vector3 GetMouseObjectPosition()
     {
-        Vector3 mousePoss;
+        Vector3 mousePoss = Vector3.zero;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit rayCastHit))
         {
-            mousePoss = rayCastHit.point;
-            Debug.Log(mousePoss);
             if (rayCastHit.transform.gameObject.GetComponent<Cell>())
             {
-                //mousePoss.y = rayCastHit.transform.gameObject.transform.position.y;
-                Debug.Log("case toucher");
+                mousePoss = rayCastHit.transform.gameObject.transform.position;
+                mousePoss.y += 1f;
             }
             return mousePoss;
         }
@@ -43,11 +42,5 @@ public class MapMovement : MonoBehaviour
         {
             return Vector3.zero;
         }
-    } 
-    public Vector3 SnapCoordinateToGrid(Vector3 position)
-    {
-        Vector3Int cellPos = gridLayout.WorldToCell(position);
-        position = grid.GetCellCenterWorld(cellPos);
-        return position;
-    }    
+    }  
 }
