@@ -2143,18 +2143,27 @@ MonoBehaviour:
   GridWidth: 10
   CellPrefab: {fileID: 4390499584229454300, guid: f7d10d2c99fc03749aa528bec0f100ee, type: 3}
   hexaGrid: {fileID: 440619669}
-  CellSize: 1
   MapTexture: {fileID: 2800000, guid: 231b9546dfc120b419b098be1de5df9b, type: 3}
   MapColors:
-  - {r: 0, g: 0, b: 0.9568628, a: 0}
-  - {r: 0.89019614, g: 1, b: 0, a: 0}
-  - {r: 0.12941177, g: 0.5254902, b: 0.098039225, a: 0}
-  - {r: 0.5529412, g: 0.32941177, b: 0.15294118, a: 0}
-  - {r: 1, g: 1, b: 1, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0.86274517, g: 0.76470596, b: 0.17254902, a: 0}
-  - {r: 0.1764706, g: 0.3019608, b: 0.16470589, a: 0}
-  CellMartial: []
+  - {r: 0, g: 0, b: 0.9568628, a: 1}
+  - {r: 0.89019614, g: 1, b: 0, a: 1}
+  - {r: 0.12941177, g: 0.5254902, b: 0.098039225, a: 1}
+  - {r: 0.5529412, g: 0.32941177, b: 0.15294118, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.5254902, b: 1, a: 1}
+  - {r: 0.86274517, g: 0.76470596, b: 0.17254902, a: 1}
+  - {r: 0.1764706, g: 0.3019608, b: 0.16470589, a: 1}
+  CellMartial:
+  - {fileID: 2100000, guid: 4d3a27be0a6b6aa479b970634c78c396, type: 2}
+  - {fileID: 2100000, guid: ac22389022e7c23418dbfd630257d549, type: 2}
+  - {fileID: 2100000, guid: f3476a2131c1b1347a09f8ce92d50427, type: 2}
+  - {fileID: 2100000, guid: 58369bf2ff3b4af4cad5f80c0b2828fa, type: 2}
+  - {fileID: 2100000, guid: 92dd6005fc468f8478db883fbaad2c8e, type: 2}
+  - {fileID: 2100000, guid: d5d0f4556a7bf0741baa7b8be38e275f, type: 2}
+  - {fileID: 2100000, guid: 8e2df3e920eb8cf4aac6dd5d866647ad, type: 2}
+  - {fileID: 2100000, guid: 3c967d4960bb5da46b9a27d67426cf07, type: 2}
+  - {fileID: 2100000, guid: 488fa17d5e494ca46a484649d360b051, type: 2}
 --- !u!114 &1302892600
 MonoBehaviour:
   m_ObjectHideFlags: 0

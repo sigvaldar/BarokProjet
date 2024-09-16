@@ -11,7 +11,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject CellPrefab, hexaGrid;
 
     [SerializeField] Texture2D MapTexture;
-    [SerializeField] int[,] MapTerrain;
+    [SerializeField] int[,] MapTerrain,test;
     int mapterraintype;
 
     [SerializeField] List<Color> MapColors;
@@ -31,18 +31,16 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     void GenerateMap()
     {
-        MapTerrain = new int[MapTexture.width, MapTexture.height];
-        for (int x = 0; x < MapTexture.width; x+=100)
+        ReadMap();
+        SetMapTab();
+
+        for (int i = 0; i < test.GetLength(0); i++)
         {
-            for (int y = 0; y < MapTexture.height; y+=100)
+            for (int y = 0; y < test.GetLength(1); y++)
             {
-                Color pixelColor = MapTexture.GetPixel(x, y);
-                MapTerrain[x, y] = GetTerrainTypeFromColor(pixelColor);
+                SetCell(test[i,y]);
             }
         }
-        
-
-
 
         //for (int y = 0; y < GridHeight; y++)
         //{
@@ -54,6 +52,61 @@ public class MapGenerator : MonoBehaviour
         //    }
         //}
     }
+
+    private void ReadMap()
+    {
+        MapTerrain = new int[MapTexture.width, MapTexture.height];
+        for (int x = 0; x < MapTexture.width; x ++)
+        {
+            for (int y = 0; y < MapTexture.height; y ++)
+            {
+                Color pixelColor = MapTexture.GetPixel(x, y);
+                MapTerrain[x, y] = GetTerrainTypeFromColor(pixelColor);
+                Debug.Log(MapTerrain[x,y]);
+            }
+        }
+    }
+
+    private void SetMapTab()
+    {
+        test = DownsampleTerrainMap(MapTerrain,10);
+    }
+
+    private void SetCell(int typeOfCell)
+    {
+        switch (typeOfCell)
+        {
+            case 0: Debug.Log("ocean");
+                break;
+            case 1:
+                Debug.Log("plaine");
+                break;
+            case 2:
+                Debug.Log("forest");
+                break;
+            case 3:
+                Debug.Log("mountagne");
+                break;
+            case 4:
+                Debug.Log("snow");
+                break;
+            case 5:
+                Debug.Log("structure");
+                break;
+            case 6:
+                Debug.Log("river");
+                break;
+            case 7:
+                Debug.Log("beach");
+                break;
+            case 8:
+                Debug.Log("swamp");
+                break;
+            default: Debug.Log("none");
+                break;
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -70,15 +123,10 @@ public class MapGenerator : MonoBehaviour
             case Color c when c == MapColors[4]: return 4;// snow
             case Color c when c == MapColors[5]: return 5;// structure
             case Color c when c == MapColors[6]: return 6;// lac or river
-            case Color c when c == MapColors[6]: return 7;// beach
-            case Color c when c == MapColors[6]: return 8;// swamp
+            case Color c when c == MapColors[7]: return 7;// beach
+            case Color c when c == MapColors[8]: return 8;// swamp
             default: return -1;// unknow terrain default
         }
-    }
-
-    private void SetCell(int typeOfCell)
-    {
-
     }
     
     /// <summary>
