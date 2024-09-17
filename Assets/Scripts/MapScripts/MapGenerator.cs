@@ -22,6 +22,7 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
         Debug.Log("map");
     }
+
     /// <summary>
     /// Methode to create a 3D hexagonal map with a Image 2D;
     /// </summary>
@@ -74,12 +75,14 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+
     private void instantiateCell(int x, int y)
     {
         //Vector3 position = HexPositioning(x, y, CellSize);
         //GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
         //mCell.transform.parent = hexaGrid.transform;
     }
+
     /// <summary>
     /// Calcule la position du centre d'un hexagone dans l'image
     /// </summary>
