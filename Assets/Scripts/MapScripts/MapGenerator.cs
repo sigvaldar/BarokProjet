@@ -202,19 +202,6 @@ public class MapGenerator : MonoBehaviour
     /// <returns></returns>
     private int GetTerrainTypeFromColor(Color color)
     {
-        //switch (color)
-        //{
-        //    case Color c when c == MapColors[0]: return 0;// ocean
-        //    case Color c when c == MapColors[1]: return 1;// plaine
-        //    case Color c when c == MapColors[2]: return 2;// forest
-        //    case Color c when c == MapColors[3]: return 3;// montagne       
-        //    case Color c when c == MapColors[4]: return 4;// snow
-        //    case Color c when c == MapColors[5]: return 5;// structure
-        //    case Color c when c == MapColors[6]: return 6;// lac or river
-        //    case Color c when c == MapColors[7]: return 7;// beach
-        //    case Color c when c == MapColors[8]: return 8;// swamp
-        //    default: return -1;// unknow terrain default
-        //}
         for (int i = 0; i < MapColors.Count; i++)
         {
             if (AreColorsSimilar(color, MapColors[i]))
