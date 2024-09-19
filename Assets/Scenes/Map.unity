@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 454635255}
   - component: {fileID: 454635254}
   m_Layer: 5
-  m_Name: InfoCell
+  m_Name: B_InfoCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2139,11 +2139,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a89d08c6ec73a17419c0dd9c9f8d91e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexHeight: 32
-  HexWidth: 32
+  HexHeight: 58
+  HexWidth: 49
   CellPrefab: {fileID: 4390499584229454300, guid: f7d10d2c99fc03749aa528bec0f100ee, type: 3}
   hexaGrid: {fileID: 440619669}
-  MapTexture: {fileID: 2800000, guid: 60e231d98cc5b3d46b749677ac66ea1a, type: 3}
+  PanelInfo: {fileID: 1063849424}
+  TextInfo: {fileID: 711489983}
+  MapTexture: {fileID: 2800000, guid: aa30df5fea7c69b47820da4deae0284f, type: 3}
   MapColors:
   - {r: 0.09019608, g: 0.08235294, b: 0.23529413, a: 1}
   - {r: 0.5529412, g: 0.7803922, b: 0.24705884, a: 1}
@@ -2853,7 +2855,7 @@ GameObject:
   - component: {fileID: 1693726672}
   - component: {fileID: 1693726671}
   m_Layer: 5
-  m_Name: InfoMap
+  m_Name: B_InfoMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

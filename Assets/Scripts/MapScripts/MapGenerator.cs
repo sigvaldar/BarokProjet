@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 //[ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] int HexHeight, HexWidth;
-    [SerializeField] GameObject CellPrefab, hexaGrid;
+    [SerializeField] GameObject CellPrefab, hexaGrid,PanelInfo;
+    [SerializeField] TextMeshProUGUI TextInfo;
 
     [SerializeField] Texture2D MapTexture;
     [SerializeField] int[,] MapTerrain;
@@ -31,34 +33,56 @@ public class MapGenerator : MonoBehaviour
 
         // Taille de la carte en fonction des hexagones
         int mapWidth = MapTexture.width / HexWidth;
-        int mapHeight = MapTexture.height / HexHeight;
+        int mapHeight = MapTexture.height / HexHeight+20;
 
-        MapTerrain = new int[mapWidth, mapHeight];
-
+        MapTerrain = new int[mapWidth,mapHeight];
+        Debug.Log($"Map Width: {mapWidth}, Map Height: {mapHeight}");
         for (int x = 0; x < mapWidth; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < mapHeight ; y++)
             {
                 Vector2 hexCenter = GetHexCenter(x, y);
                 MapTerrain[x, y] = GetHexagonTerrainType((int)hexCenter.x, (int)hexCenter.y);
             }
         }
-
         SetMap();
     }
 
     private void SetMap()
     {
-        float CellSize = 1;//HexWidth * 0.5f;
-        for (int i = 0; i < MapTerrain.GetLength(0); i++)
+        float CellSize = 1;
+        Debug.Log(MapTerrain.GetLength(0)+" "+MapTerrain.GetLength(1));
+        for (int x = 0; x < MapTerrain.GetLength(0); x++)
         {
             for (int y = 0; y < MapTerrain.GetLength(1); y++)
             {
-                Vector3 position = HexPositioning(i, y, CellSize);
+                Vector3 position = HexPositioning(x, y, CellSize);
                 GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
                 mCell.transform.parent = hexaGrid.transform;
 
-                int terrainType = MapTerrain[i, y];
+                Cell cellScript = mCell.GetComponent<Cell>();
+                if (cellScript != null)
+                {
+                    // Initialise les données de la cellule
+                    cellScript.CellPosition = position;
+                    var landtype = (Cell.LandType)MapTerrain[x, y];
+                    cellScript.landtype = landtype.ToString();
+                    cellScript.OwnerName = "Inconnu";  
+                    cellScript.OwnerFaction = "Faction X";  
+                    cellScript.Region = "Région Y"; 
+                    cellScript.Country = "Pays Z";  
+                    cellScript.Own = false;  
+                    cellScript.Revealed = false;
+
+                    cellScript.Ressources = new List<Ressources>();  
+                    cellScript.LocalUnit = new List<Unitées>();
+
+
+                    cellScript.PanelInfo = PanelInfo;
+                    cellScript.Text = TextInfo;
+                }
+
+                int terrainType = MapTerrain[x, y]; 
                 if (terrainType >= 0 && terrainType < CellMartial.Count)
                 {
                     Renderer cellRenderer = mCell.GetComponent<Renderer>();
@@ -69,7 +93,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"Terrain inconnu à la position ({i}, {y})");
+                    Debug.LogWarning($"Terrain inconnu à la position ({x}, {y})");
                 }
                 //SetCell(MapTerrain[i, y],i,y);
             }
