@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapMovement : MonoBehaviour
+public class UnitMovements : MonoBehaviour
 {
     [SerializeField] private GameObject pion;
     [SerializeField] private Vector3 Selectedcell;
     [SerializeField] private bool canMove;
+    private int[,] MapTab;
     // Update is called once per frame
     void Update()
     {

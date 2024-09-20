@@ -51,13 +51,13 @@ MonoBehaviour:
   OwnerFaction: 
   Region: 
   Country: 
-  RegionID: 0
+  landtype: 
   Own: 0
   Revealed: 0
-  CellPossition: {x: 0, y: 0, z: 0}
-  landtype: {fileID: 0}
+  CellPosition: {x: 0, y: 0, z: 0}
   Ressources: []
   LocalUnit: []
+  mapInfo: {fileID: 0}
 --- !u!33 &8909611525829269454
 MeshFilter:
   m_ObjectHideFlags: 0

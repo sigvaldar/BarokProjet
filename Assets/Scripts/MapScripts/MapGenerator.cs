@@ -18,6 +18,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] List<Color> MapColors;
     [SerializeField] List<Material> CellMartial;
+    [SerializeField] MapInformation mapinfo;
 
     private void Awake()
     {
@@ -77,9 +78,9 @@ public class MapGenerator : MonoBehaviour
                     cellScript.Ressources = new List<Ressources>();  
                     cellScript.LocalUnit = new List<Unitées>();
 
-
-                    cellScript.PanelInfo = PanelInfo;
-                    cellScript.Text = TextInfo;
+                    cellScript.mapInfo = mapinfo;
+                    //cellScript.PanelInfo = PanelInfo;
+                    //cellScript.Text = TextInfo;
                 }
 
                 int terrainType = MapTerrain[x, y]; 

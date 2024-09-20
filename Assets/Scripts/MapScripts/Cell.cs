@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
-
 
 public class Cell : MonoBehaviour
 {
@@ -14,8 +13,7 @@ public class Cell : MonoBehaviour
     public List<Ressources> Ressources;
     public List<Unitées> LocalUnit;
 
-    public GameObject PanelInfo;
-    public TextMeshProUGUI Text;
+    public MapInformation mapInfo;
 
     public enum LandType
     {
@@ -28,22 +26,32 @@ public class Cell : MonoBehaviour
         Riviere,
         Plage,
         Marais,
+        Volcan,
         Inconnu
     }
     private void OnMouseEnter()
     {
-        PanelInfo.SetActive(true);
-        ShowCellInfo();
+        mapInfo.ShowInformation(this);
+        ToggleHighlight(true);
     }
     private void OnMouseExit()
     {
-        PanelInfo.SetActive(false);
+        mapInfo.ShowInformation(this);
+        ToggleHighlight(false);
     }
-
-    private void ShowCellInfo()
+    public void ToggleHighlight(bool highlight)
     {
-        Text.text = "";
-        Text.text = OwnerName+" "+OwnerFaction+" "+" "+Region+" "+Country+" "+landtype;
+        var material = this.GetComponent<Renderer>().material;
+        var color = UnityEngine.Color.white;
+        if (highlight)
+        {
+                material.EnableKeyword("_EMISSION");
+                material.SetColor("_EmissionColor", color);
+        }
+        else
+        {
+                material.DisableKeyword("_EMISSION");
+        }
     }
 }
 
