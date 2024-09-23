@@ -11,7 +11,7 @@ public class Cell : MonoBehaviour
     public bool Own, Revealed;
     public Vector3 CellPosition;
     public List<Ressources> Ressources;
-    public List<Unitées> LocalUnit;
+    public List<unit> LocalUnit;
 
     public MapInformation mapInfo;
 
@@ -32,17 +32,17 @@ public class Cell : MonoBehaviour
     private void OnMouseEnter()
     {
         mapInfo.ShowInformation(this);
-        ToggleHighlight(true);
+        ToggleHighlight(true, UnityEngine.Color.white);
     }
     private void OnMouseExit()
     {
         mapInfo.ShowInformation(this);
-        ToggleHighlight(false);
+        ToggleHighlight(false, UnityEngine.Color.white);
     }
-    public void ToggleHighlight(bool highlight)
+    public void ToggleHighlight(bool highlight, UnityEngine.Color color)
     {
-        var material = this.GetComponent<Renderer>().material;
-        var color = UnityEngine.Color.white;
+        var material = GetComponent<Renderer>().material;
+        //var color = UnityEngine.Color.white;
         if (highlight)
         {
                 material.EnableKeyword("_EMISSION");

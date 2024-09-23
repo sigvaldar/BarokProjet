@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unitées : MonoBehaviour
+public class unit : MonoBehaviour
 {
+    public Vector3 PawnPosition;
     // Start is called before the first frame update
     void Start()
     {

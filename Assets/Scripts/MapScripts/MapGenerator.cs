@@ -65,7 +65,7 @@ public class MapGenerator : MonoBehaviour
                 if (cellScript != null)
                 {
                     // Initialise les données de la cellule
-                    cellScript.CellPosition = position;
+                    cellScript.CellPosition = new Vector3 (x,position.y,y);
                     var landtype = (Cell.LandType)MapTerrain[x, y];
                     cellScript.landtype = landtype.ToString();
                     cellScript.OwnerName = "Inconnu";  
@@ -76,7 +76,7 @@ public class MapGenerator : MonoBehaviour
                     cellScript.Revealed = false;
 
                     cellScript.Ressources = new List<Ressources>();  
-                    cellScript.LocalUnit = new List<Unitées>();
+                    cellScript.LocalUnit = new List<unit>();
 
                     cellScript.mapInfo = mapinfo;
                     //cellScript.PanelInfo = PanelInfo;
@@ -261,7 +261,7 @@ public class MapGenerator : MonoBehaviour
 
         float worldX = width * (x + 0.5f * (y & 1));
         float worldZ = height * y * 0.75f;
-        float worldY = (UnityEngine.Random.Range(0f, 1f));
+        float worldY = 0;//(UnityEngine.Random.Range(0f, 1f));
         return new Vector3(worldX, worldY, worldZ);
     }
 }

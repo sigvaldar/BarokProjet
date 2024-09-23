@@ -2258,9 +2258,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07859e6ebe81f1f44adbe2b72bfc8c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pion: {fileID: 937405650}
-  Selectedcell: {x: 0, y: 0, z: 0}
+  pawns:
+  - {fileID: 937405650}
+  spawnPosition: []
+  currentPawnPosition: {x: 0, y: 0, z: 0}
+  selectedCellPosition: {x: 0, y: 0, z: 0}
   canMove: 0
+  cout: 0
+  reserve: 0
 --- !u!114 &1302892601
 MonoBehaviour:
   m_ObjectHideFlags: 0
