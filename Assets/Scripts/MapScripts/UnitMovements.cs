@@ -184,7 +184,7 @@ public class UnitMovements : MonoBehaviour
         foreach (Vector2Int cellCoords in cellsToHighlight)
         {
             mapGenerator.mapArray[cellCoords.x, cellCoords.y].Selected = true;
-            mapGenerator.mapArray[cellCoords.x, cellCoords.y].ToggleHighlight(true,Color.green);
+            mapGenerator.mapArray[cellCoords.x, cellCoords.y].ToggleHighlight(true,Color.red);
         }
     }
 
@@ -192,7 +192,7 @@ public class UnitMovements : MonoBehaviour
     {
         foreach (Vector2Int hexCoords in previouslyHighlightedCells)
         {
-            mapGenerator.mapArray[hexCoords.x, hexCoords.y].ToggleHighlight(false,Color.green);
+            mapGenerator.mapArray[hexCoords.x, hexCoords.y].ToggleHighlight(false,Color.red);
             mapGenerator.mapArray[hexCoords.x, hexCoords.y].Selected = false;
         }
         previouslyHighlightedCells.Clear();  // Vider la liste des cellules précédemment surlignées

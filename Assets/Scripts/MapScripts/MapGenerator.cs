@@ -20,7 +20,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] List<Material> CellMartial;
     [SerializeField] MapInformation mapinfo;
 
-    public Cell[,] mapArray;
+    public Cell[,] mapArray;//change to dictio v2 and cell
 
     private void Awake()
     {
@@ -137,7 +137,6 @@ public class MapGenerator : MonoBehaviour
         // Rayon approximatif de l'hexagone
         int radius = HexWidth / 2;
         Dictionary<int, int> terrainCount = new Dictionary<int, int>();
-
         for (int x = centerX - radius; x <= centerX + radius; x++)
         {
             for (int y = centerY - radius; y <= centerY + radius; y++)
@@ -265,7 +264,7 @@ public class MapGenerator : MonoBehaviour
 
         float worldX = width * (x + 0.5f * (y & 1));
         float worldZ = height * y * 0.75f;
-        float worldY = 0;//(UnityEngine.Random.Range(0f, 1f));
+        float worldY = (UnityEngine.Random.Range(0f, 1f));
         return new Vector3(worldX, worldY, worldZ);
     }
 }

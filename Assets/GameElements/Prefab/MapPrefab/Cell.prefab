@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &178104965792608580
 Transform:
@@ -54,6 +54,7 @@ MonoBehaviour:
   landtype: 
   Own: 0
   Revealed: 0
+  Selected: 0
   CellPosition: {x: 0, y: 0, z: 0}
   Ressources: []
   LocalUnit: []
