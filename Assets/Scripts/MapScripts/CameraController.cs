@@ -20,25 +20,26 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        //get camera direction
         if ((Input.GetKey(KeyCode.W)) || (Input.GetKey(KeyCode.UpArrow)))
         {
-            MouveCamera(Vector3.forward);
+            MoveCamera(Vector3.forward);
         }
         if ((Input.GetKey(KeyCode.A)) || (Input.GetKey(KeyCode.LeftArrow)))
         {
-            MouveCamera(Vector3.left);
+            MoveCamera(Vector3.left);
         }
         if ((Input.GetKey(KeyCode.S)) || (Input.GetKey(KeyCode.DownArrow)))
         {
-            MouveCamera(Vector3.back);
+            MoveCamera(Vector3.back);
         }
         if ((Input.GetKey(KeyCode.D)) || (Input.GetKey(KeyCode.RightArrow)))
         {
-            MouveCamera(Vector3.right);
+            MoveCamera(Vector3.right);
         }
 
         // Rotation
-        if (Input.GetMouseButton(1)) // Clic droit pour tourner
+        if (Input.GetMouseButton(1))
         {
             CameraRotation();
         }
@@ -46,6 +47,9 @@ public class CameraController : MonoBehaviour
         CameraZoom();
     }
 
+    /// <summary>
+    /// Rotate the camera
+    /// </summary>
     private void CameraRotation()
     {
         float horizontal = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
@@ -53,6 +57,9 @@ public class CameraController : MonoBehaviour
         transform.Rotate(vertical, horizontal, 0);
     }
 
+    /// <summary>
+    /// Zoom in and out with the fieldOfView and full Zoom out;
+    /// </summary>
     private void CameraZoom()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -108,7 +115,11 @@ public class CameraController : MonoBehaviour
 
     }
 
-    public void MouveCamera(Vector3 direction)
+    /// <summary>
+    /// Move the main camera in a direction
+    /// </summary>
+    /// <param name="direction"></param>
+    public void MoveCamera(Vector3 direction)
     {
         float modificator = Camera.main.fieldOfView/100;
         Camera.main.transform.position += direction * Time.deltaTime * CameraSpeed;

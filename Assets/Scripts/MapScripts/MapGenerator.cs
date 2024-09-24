@@ -20,6 +20,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] List<Material> CellMartial;
     [SerializeField] MapInformation mapinfo;
 
+    public Cell[,] mapArray;
+
     private void Awake()
     {
         GenerateMap();
@@ -37,6 +39,7 @@ public class MapGenerator : MonoBehaviour
         int mapHeight = MapTexture.height / HexHeight+20;
 
         MapTerrain = new int[mapWidth,mapHeight];
+        mapArray = new Cell[mapWidth,mapHeight];
         Debug.Log($"Map Width: {mapWidth}, Map Height: {mapHeight}");
         for (int x = 0; x < mapWidth; x++)
         {
@@ -61,7 +64,8 @@ public class MapGenerator : MonoBehaviour
                 GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
                 mCell.transform.parent = hexaGrid.transform;
 
-                Cell cellScript = mCell.GetComponent<Cell>();
+                Cell cellScript = mCell.GetComponent<Cell>();                
+                mapArray[x, y] = cellScript;
                 if (cellScript != null)
                 {
                     // Initialise les données de la cellule

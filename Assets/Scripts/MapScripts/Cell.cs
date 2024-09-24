@@ -8,7 +8,7 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public string OwnerName, OwnerFaction, Region, Country, landtype;
-    public bool Own, Revealed;
+    public bool Own, Revealed,Selected;
     public Vector3 CellPosition;
     public List<Ressources> Ressources;
     public List<unit> LocalUnit;
@@ -31,14 +31,27 @@ public class Cell : MonoBehaviour
     }
     private void OnMouseEnter()
     {
-        mapInfo.ShowInformation(this);
-        ToggleHighlight(true, UnityEngine.Color.white);
+        if (!Selected)
+        {
+            //mapInfo.ShowInformation(this);
+            ToggleHighlight(true, UnityEngine.Color.white);
+        }
+
     }
     private void OnMouseExit()
     {
-        mapInfo.ShowInformation(this);
-        ToggleHighlight(false, UnityEngine.Color.white);
+        if (!Selected)
+        {
+            //mapInfo.ShowInformation(this);
+            ToggleHighlight(false, UnityEngine.Color.white);
+        }
     }
+
+    /// <summary>
+    /// hightlight the gameObject with a color
+    /// </summary>
+    /// <param name="highlight"></param>
+    /// <param name="color"></param>
     public void ToggleHighlight(bool highlight, UnityEngine.Color color)
     {
         var material = GetComponent<Renderer>().material;

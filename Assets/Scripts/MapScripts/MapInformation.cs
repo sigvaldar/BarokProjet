@@ -8,6 +8,11 @@ public class MapInformation : MonoBehaviour
 {
     public GameObject PanelInfo,PanelMap;
     public TextMeshProUGUI Text;
+
+    /// <summary>
+    /// Show all the information of a Cell
+    /// </summary>
+    /// <param name="checkedCell"></param>
     public void ShowInformation(Cell checkedCell)
     {
         PanelInfo.SetActive(!PanelInfo.activeInHierarchy);
