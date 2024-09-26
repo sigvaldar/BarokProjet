@@ -9,21 +9,23 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] int HexHeight, HexWidth;
+    public int HexHeight, HexWidth;
     [SerializeField] GameObject CellPrefab, hexaGrid,PanelInfo;
     [SerializeField] TextMeshProUGUI TextInfo;
 
     [SerializeField] Texture2D MapTexture;
-    [SerializeField] int[,] MapTerrain;
+    public int[,] MapTerrain;
 
     [SerializeField] List<Color> MapColors;
     [SerializeField] List<Material> CellMartial;
     [SerializeField] MapInformation mapinfo;
 
-    public Cell[,] mapArray;//change to dictio v2 and cell
+    //public Cell[,] mapArray;//change to dictio v2 and cell
 
+    public Dictionary<Vector3Int, Cell> CellDictionary = new Dictionary<Vector3Int, Cell>();
     private void Awake()
     {
+        // Initialisation du dictionnaire avec les types de terrain et leurs matériaux correspondants
         GenerateMap();
         Debug.Log("map");
     }
@@ -39,7 +41,7 @@ public class MapGenerator : MonoBehaviour
         int mapHeight = MapTexture.height / HexHeight+20;
 
         MapTerrain = new int[mapWidth,mapHeight];
-        mapArray = new Cell[mapWidth,mapHeight];
+        //mapArray = new Cell[mapWidth,mapHeight];
         Debug.Log($"Map Width: {mapWidth}, Map Height: {mapHeight}");
         for (int x = 0; x < mapWidth; x++)
         {
@@ -60,56 +62,57 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < MapTerrain.GetLength(1); y++)
             {
-                Vector3 position = HexPositioning(x, y, CellSize);
-                GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
-                mCell.transform.parent = hexaGrid.transform;
-
-                Cell cellScript = mCell.GetComponent<Cell>();                
-                mapArray[x, y] = cellScript;
-                if (cellScript != null)
-                {
-                    // Initialise les données de la cellule
-                    cellScript.CellPosition = new Vector3 (x,position.y,y);
-                    var landtype = (Cell.LandType)MapTerrain[x, y];
-                    cellScript.landtype = landtype.ToString();
-                    cellScript.OwnerName = "Inconnu";  
-                    cellScript.OwnerFaction = "Faction X";  
-                    cellScript.Region = "Région Y"; 
-                    cellScript.Country = "Pays Z";  
-                    cellScript.Own = false;  
-                    cellScript.Revealed = false;
-
-                    cellScript.Ressources = new List<Ressources>();  
-                    cellScript.LocalUnit = new List<unit>();
-
-                    cellScript.mapInfo = mapinfo;
-                    //cellScript.PanelInfo = PanelInfo;
-                    //cellScript.Text = TextInfo;
-                }
-
-                int terrainType = MapTerrain[x, y]; 
-                if (terrainType >= 0 && terrainType < CellMartial.Count)
-                {
-                    Renderer cellRenderer = mCell.GetComponent<Renderer>();
-                    if (cellRenderer != null)
-                    {
-                        cellRenderer.material = CellMartial[terrainType];
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"Terrain inconnu à la position ({x}, {y})");
-                }
-                //SetCell(MapTerrain[i, y],i,y);
+                instantiateCell(x,y,CellSize);
             }
         }
     }
 
-    private void instantiateCell(int x, int y)
+    private void instantiateCell(int x, int y, float cellSize)
     {
-        //Vector3 position = HexPositioning(x, y, CellSize);
-        //GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
-        //mCell.transform.parent = hexaGrid.transform;
+        Vector3 position = HexPositioning(x, y, cellSize);
+        GameObject mCell = Instantiate(CellPrefab, position, Quaternion.identity);
+        mCell.transform.parent = hexaGrid.transform;
+
+        Cell cellScript = mCell.GetComponent<Cell>();
+        //mapArray[x, y] = cellScript;
+        CellDictionary.Add((Vector3Int.RoundToInt(position)),cellScript);
+        if (cellScript != null)
+        {
+            ConfigureCell(x, y, position, cellScript);
+        }
+
+        int terrainType = MapTerrain[x, y];
+        if (terrainType >= 0 && terrainType < CellMartial.Count)
+        {
+            Renderer cellRenderer = mCell.GetComponent<Renderer>();
+            if (cellRenderer != null)
+            {
+                cellRenderer.material = CellMartial[terrainType];
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Terrain inconnu à la position ({x}, {y})");
+        }
+    }
+
+    private void ConfigureCell(int x, int y, Vector3 position, Cell cellScript)
+    {
+        // Initialise les données de la cellule
+        cellScript.CellPosition = new Vector3(x, position.y, y);
+        var landtype = (Cell.LandType)MapTerrain[x, y];
+        cellScript.landtype = landtype.ToString();
+        cellScript.OwnerName = "Inconnu";
+        cellScript.OwnerFaction = "Faction X";
+        cellScript.Region = "Région Y";
+        cellScript.Country = "Pays Z";
+        cellScript.Own = false;
+        cellScript.Revealed = false;
+
+        cellScript.Ressources = new List<Ressources>();
+        cellScript.LocalUnit = new List<unit>();
+
+        cellScript.mapInfo = mapinfo;
     }
 
     /// <summary>
@@ -137,9 +140,9 @@ public class MapGenerator : MonoBehaviour
         // Rayon approximatif de l'hexagone
         int radius = HexWidth / 2;
         Dictionary<int, int> terrainCount = new Dictionary<int, int>();
-        for (int x = centerX - radius; x <= centerX + radius; x++)
+        for (int x = centerX - radius; x <= centerX + radius; x+=2)
         {
-            for (int y = centerY - radius; y <= centerY + radius; y++)
+            for (int y = centerY - radius; y <= centerY + radius; y+=2)
             {
                 if (x >= 0 && x < MapTexture.width && y >= 0 && y < MapTexture.height)
                 {
@@ -192,7 +195,7 @@ public class MapGenerator : MonoBehaviour
     {
         switch (typeOfCell)
         {
-            case 0: instantiateCell(x,y); Debug.Log("ocean");
+            case 0: Debug.Log("ocean");
                 break;
             case 1:
                 Debug.Log("plaine");
@@ -245,9 +248,11 @@ public class MapGenerator : MonoBehaviour
     /// </summary>
     private bool AreColorsSimilar(Color c1, Color c2, float tolerance = 0.1f)
     {
-        return Mathf.Abs(c1.r - c2.r) < tolerance &&
-               Mathf.Abs(c1.g - c2.g) < tolerance &&
-               Mathf.Abs(c1.b - c2.b) < tolerance;
+        //return Mathf.Abs(c1.r - c2.r) < tolerance &&
+        //       Mathf.Abs(c1.g - c2.g) < tolerance &&
+        //       Mathf.Abs(c1.b - c2.b) < tolerance;
+        float distance = Mathf.Sqrt(Mathf.Pow(c1.r - c2.r, 2) + Mathf.Pow(c1.g - c2.g, 2) + Mathf.Pow(c1.b - c2.b, 2));
+        return distance < tolerance;
     }
 
     /// <summary>

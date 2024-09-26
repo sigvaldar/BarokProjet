@@ -13,10 +13,11 @@ public class UnitMovements : MonoBehaviour
     public int cout, reserve;
 
     [SerializeField] MapGenerator mapGenerator;
+    [SerializeField] Cell currentCell;
 
 
     /// <summary>
-    /// Return the distance between twoo Hexagonal Cell
+    /// Return the distance between two Hexagonal Cell
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -29,53 +30,6 @@ public class UnitMovements : MonoBehaviour
     }
 
     /// <summary>
-    /// Return the position of the clicked element if it's a cell
-    /// </summary>
-    /// <returns></returns>
-    public static Vector3 GetMouseObjectPosition()
-    {
-        Vector3 mousePoss = Vector3.zero;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit rayCastHit))
-        {
-            if (rayCastHit.transform.gameObject.GetComponent<Cell>())
-            {
-                mousePoss = rayCastHit.transform.gameObject.transform.position;
-                mousePoss.y += 1f;
-            }
-            return mousePoss;
-        }
-        else
-        {
-            return Vector3.zero;
-        }
-    }
-
-    /// <summary>
-    /// Return if the gameobject is a unit or not
-    /// </summary>
-    /// <returns></returns>
-    private bool CheckGameobject()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit rayCastHit))
-        {
-            if (rayCastHit.transform.gameObject.GetComponent<unit>())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /// <summary>
     /// check if the cell is in the tab and not outside
     /// </summary>
     /// <param name="hexCoords"></param>
@@ -83,7 +37,7 @@ public class UnitMovements : MonoBehaviour
     bool IsCellInBounds(Vector2Int hexCoords)
     {
         // Vérifie si la cellule est dans les limites de la carte
-        return hexCoords.x >= 0 && hexCoords.x < mapGenerator.mapArray.GetLength(0) && hexCoords.y >= 0 && hexCoords.y < mapGenerator.mapArray.GetLength(1);
+        return hexCoords.x >= 0 && hexCoords.x < mapGenerator.MapTerrain.GetLength(0)/*mapArray*/ && hexCoords.y >= 0 && hexCoords.y < mapGenerator.MapTerrain.GetLength(1)/*mapArray*/;
     }
 
 
@@ -112,19 +66,18 @@ public class UnitMovements : MonoBehaviour
         {
             var (currentCell, pointsLeft) = toExplore.Dequeue();
 
-            if (pointsLeft < 0)
-                continue;
+            //if (pointsLeft < 0)
+            //    continue;
 
-            // Ajouter la cellule actuelle à la liste des accessibles
-            accessibleCells.Add(currentCell);
 
             // Explorer les voisins si on a encore des points de mouvement
             if (pointsLeft > 0)
-            {
+            { 
+                accessibleCells.Add(currentCell); // Ajouter la cellule actuelle à la liste des accessibles
                 for (int i = 0; i < 6; i++)  // Parcours des 6 directions possibles
                 {
                     Vector2Int neighbor = GetNeighbor(currentCell, i);
-
+                    Debug.Log("direction : "+ i + ",neighbor:"+  neighbor);
                     if (IsCellInBounds(neighbor) && !visited.Contains(neighbor))  // Si la cellule n'a pas encore été visitée
                     {
                         visited.Add(neighbor);
@@ -145,28 +98,67 @@ public class UnitMovements : MonoBehaviour
             foreach (var item in pawns)
             {
                 item.transform.position = spawnPosition[i];
+                currentPawnPosition = item.transform.position;
                 i++;
             }
         }
 
     }
-    // Update is called once per frame
+
+    private GameObject GetObjectUnderMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit rayCastHit))
+        {
+            return rayCastHit.transform.gameObject;
+        }
+        return null;
+    }
+    float threshold = 1.0f;
+    Cell FindCellFromPosition(Vector3 unitPosition)
+    {
+        Vector3Int roundedPosition = Vector3Int.RoundToInt(unitPosition);
+        if (mapGenerator.CellDictionary.TryGetValue(roundedPosition, out Cell cell))
+        {
+            return cell;
+        }
+        //foreach (Cell cell in mapGenerator.mapArray)
+        //{
+        //    // Vérifie si l'unité est dans cette cellule (en fonction d'une distance ou d'une méthode plus précise)
+        //    if (Vector3.Distance(unitPosition, cell.transform.position) < threshold)
+        //    {
+        //        return cell;
+        //    }
+        //}
+        return null; // Si aucune cellule n'est trouvée
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (canMove)
+            GameObject clickedObject = GetObjectUnderMouse();
+
+            if (clickedObject != null)
             {
-                selectedCellPosition = GetMouseObjectPosition();
-                UnitMovement();
-                canMove = false;
-                ClearPreviousHighlights();
-            }
-            unitSelected = CheckGameobject();
-            if (unitSelected)
-            {
-                canMove = true;
-                HightlightNeighbor();
+                // Vérifier si c'est une unité
+                if (clickedObject.GetComponent<unit>())
+                {
+                    //SelectPawn(clickedObject);
+                    HightlightNeighbor();
+                    canMove = true;
+                }
+                // Vérifier si c'est une cellule
+                else if (clickedObject.GetComponent<Cell>())
+                {
+                    if (canMove)
+                    {
+                        selectedCellPosition = clickedObject.transform.position;
+                        UnitMovement();
+                        ClearPreviousHighlights();
+                        canMove = false;
+                    }
+                }
             }
         }
     }
@@ -176,15 +168,16 @@ public class UnitMovements : MonoBehaviour
         // Récupérer la position actuelle du pion et les points de mouvement restants
         Vector2Int pionPosition = new Vector2Int ((int)currentPawnPosition.x,(int)currentPawnPosition.z);  // Coordonnées actuelles du pion
         int movementPoints = reserve;  // Points de mouvement restants
-
+        Debug.Log("pionpos : "+ pionPosition);
         // Récupérer toutes les cellules accessibles
         List<Vector2Int> cellsToHighlight = GetAccessibleCells(pionPosition, movementPoints);
         previouslyHighlightedCells = cellsToHighlight;
         // Appliquer le highlight sur chaque cellule
         foreach (Vector2Int cellCoords in cellsToHighlight)
         {
-            mapGenerator.mapArray[cellCoords.x, cellCoords.y].Selected = true;
-            mapGenerator.mapArray[cellCoords.x, cellCoords.y].ToggleHighlight(true,Color.red);
+            //Debug.Log(mapGenerator.mapArray[cellCoords.x,cellCoords.y].CellPosition);
+            //mapGenerator.mapArray[cellCoords.x, cellCoords.y].Selected = true;
+            //mapGenerator.mapArray[cellCoords.x, cellCoords.y].ToggleHighlight(true,Color.red);
         }
     }
 
@@ -192,8 +185,8 @@ public class UnitMovements : MonoBehaviour
     {
         foreach (Vector2Int hexCoords in previouslyHighlightedCells)
         {
-            mapGenerator.mapArray[hexCoords.x, hexCoords.y].ToggleHighlight(false,Color.red);
-            mapGenerator.mapArray[hexCoords.x, hexCoords.y].Selected = false;
+            //mapGenerator.mapArray[hexCoords.x, hexCoords.y].ToggleHighlight(false,Color.red);
+            //mapGenerator.mapArray[hexCoords.x, hexCoords.y].Selected = false;
         }
         previouslyHighlightedCells.Clear();  // Vider la liste des cellules précédemment surlignées
     }
@@ -202,9 +195,9 @@ public class UnitMovements : MonoBehaviour
     {
         Vector2Int currentpos = new Vector2Int ((int)currentPawnPosition.x,(int)currentPawnPosition.z) ;
         Vector2Int targetpos = new Vector2Int  ((int)selectedCellPosition.x, (int)selectedCellPosition.z);
-        int distance = HexDistance(currentpos,targetpos);
+        int distance = HexDistance(currentpos,targetpos)/2;
         int FinalCost = cout * distance;
-        Debug.Log(distance);
+        Debug.Log("distance : "+distance);
         if (reserve >= FinalCost)
         {
             pawns[0].transform.position = selectedCellPosition;//a changer

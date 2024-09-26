@@ -6,6 +6,6 @@ using UnityEngine;
 public class unit : MonoBehaviour
 {
     public Vector3 PawnPosition;
-    
+    public Cell currentCell;
 
 }
